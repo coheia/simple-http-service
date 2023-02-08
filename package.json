@@ -1,0 +1,26 @@
+{
+  "name": "simple-http-service",
+  "description": "The SimpleHttpService class makes it easier to use http methods.",
+  "readmeFilename": "README.md",
+  "keywords": [
+    "http-service",
+    "http",
+    "typescript",
+    "javascript"
+  ],
+  "tags": [
+    "http",
+    "typescript",
+    "javascript"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "Felipe Correia"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coheia/simple-http-service"
+  },
+  "license": "MIT",
+  "main": "SimpleHttpService.ts"
+}
