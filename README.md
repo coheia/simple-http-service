@@ -4,35 +4,35 @@ A class that facilitates the use of HTTP methods, it's a simple and easy way to 
 
 ### **Usage**
 
-```javascript
-import { SimpleHttpService } from 'simple-http-service'
+```typescript
+import { SimpleHttpService } from '@coheia/simple-http-service'
 
 // simple get request
-const response = (await api.get) < YourResponseType > '/your/endpoint'
+const response = await api.get<YourResponseType>('/your/endpoint')
 
-// simple post request
-const response =
-  (await api.post) <
-  YourResponseType >
-  ('/your/endpoint',
-  {
-    key: 'value'
-  })
+// simple destruct response
+interface LoginSuccess {
+  accessToken: string;
+}
+const { accessToken } = await api.post<LoginSuccess>('/auth/login', {
+  username: 'admin',
+  password: '***'
+});
 ```
 
 ### **Override methods**
 
 If you need to add authentication, you can extend the SimpleHttpService class and override the handleHeaders method.
 
-```javascript
-import { SimpleHttpService, Headers, Endpoint } from 'simple-http-service'
+```typescript
+import { SimpleHttpService, Headers, Endpoint } from '@coheia/simple-http-service'
 
 const TOKEN = 'your_token'
 
 export class IsAuthenticatedService extends SimpleHttpService {
   private readonly token: string
 
-  constructor(token: string, baseUrl?: Endpoint) {
+  constructor(token: string, baseUrl: Endpoint) {
     super(baseUrl)
     this.token = token
   }
