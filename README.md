@@ -37,7 +37,7 @@ export class IsAuthenticatedService extends SimpleHttpService {
     this.token = token
   }
 
-  handleHeaders(headers: Headers): Headers {
+  override handleHeaders(headers: Headers): Headers {
     return {
       Authorization: `Bearer ${this.token}`,
       ...super.handleHeaders(headers)
