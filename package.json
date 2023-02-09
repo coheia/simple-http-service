@@ -16,7 +16,7 @@
     }
   },
   "_moduleAliases": {
-    "@simple-http-service" : "./dist/index.js"
+    "@simple-http-service": "./dist/index.js"
   },
   "keywords": [
     "http-service",
@@ -32,7 +32,7 @@
     "typescript",
     "javascript"
   ],
-  "version": "1.1.5",
+  "version": "1.1.6",
   "author": {
     "name": "Felipe Correia"
   },
