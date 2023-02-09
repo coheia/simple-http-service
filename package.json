@@ -2,6 +2,7 @@
   "name": "@coheia/simple-http-service",
   "description": "The SimpleHttpService class makes it easier to use http methods.",
   "readmeFilename": "README.md",
+  "type": "module",
   "keywords": [
     "http-service",
     "http",
