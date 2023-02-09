@@ -26,7 +26,7 @@
     "url": "git+https://github.com/coheia/simple-http-service"
   },
   "license": "MIT",
-  "main": "./SimpleHttpService.js",
+  "main": "./index.js",
   "types": "./SimpleHttpService.d.ts",
   "devDependencies": {
     "typescript": "^4.9.5",
