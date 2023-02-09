@@ -3,6 +3,18 @@
   "description": "The SimpleHttpService class makes it easier to use http methods.",
   "readmeFilename": "README.md",
   "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "default": "./index.d.ts"
+      },
+      "default": {
+        "default": "./index.js"
+      }
+    }
+  },
   "keywords": [
     "http-service",
     "http",
@@ -26,8 +38,6 @@
     "url": "git+https://github.com/coheia/simple-http-service"
   },
   "license": "MIT",
-  "main": "./index.js",
-  "types": "./SimpleHttpService.d.ts",
   "devDependencies": {
     "typescript": "^4.9.5",
     "@types/node": "^18.13.0"
