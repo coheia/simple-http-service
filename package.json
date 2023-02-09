@@ -15,6 +15,9 @@
       }
     }
   },
+  "_moduleAliases": {
+    "@simple-http-service" : "./dist/index.js"
+  },
   "keywords": [
     "http-service",
     "http",
@@ -39,7 +42,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.9.5",
-    "@types/node": "^18.13.0"
+    "@types/node": "^18.13.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2"
   }
 }
