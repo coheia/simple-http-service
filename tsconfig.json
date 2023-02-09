@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [ "es2015", "es2015.promise" ],
-    "module": "ES2015",
+    "target": "ES2020",
+    "lib": [ "ES2020", "ES2020.Promise" ],
+    "module": "ES2020",
     "declaration": true,
     "strict": true,
     "esModuleInterop": true
