@@ -5,7 +5,7 @@ export type Endpoint = string
 /**
  * Type that defines the body of the request.
  */
-export type BodyReq = Record<string, unknown>
+export type BodyReq = RequestInit['body']
 /**
  * Type that defines the headers of the request.
  */
@@ -19,14 +19,14 @@ export type Headers = RequestInit['headers']
  * @class SimpleHttpService
  */
 export class SimpleHttpService {
-  private readonly baseUrl
+  private readonly baseUrl: string
 
   /**
    * Initializes the class with a base URL.
    *
    * @param baseUrl The base URL of the API.
    */
-  constructor(baseUrl) {
+  constructor(baseUrl: string) {
     this.baseUrl = baseUrl
   }
 
@@ -35,13 +35,13 @@ export class SimpleHttpService {
    *
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
-   * @param {Headers} [headers] Request headers.
+   * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  async get<T>(endpoint: Endpoint, headers?: Headers): Promise<T> {
+  async get<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'GET',
-      headers
+      ...requestInit
     })
   }
 
@@ -51,18 +51,18 @@ export class SimpleHttpService {
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
-   * @param {Headers} [headers] Request headers.
+   * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   async post<T>(
     endpoint: Endpoint,
     body: BodyReq,
-    headers?: Headers
+    requestInit?: Omit<RequestInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'POST',
-      headers,
-      body
+      body,
+      ...requestInit,
     })
   }
 
@@ -72,18 +72,18 @@ export class SimpleHttpService {
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
-   * @param {Headers} [headers] Request headers.
+   * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   async put<T>(
     endpoint: Endpoint,
     body: BodyReq,
-    headers?: Headers
+    requestInit?: Omit<RequestInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'PUT',
-      headers,
-      body
+      body,
+      ...requestInit
     })
   }
 
@@ -93,18 +93,18 @@ export class SimpleHttpService {
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
-   * @param {Headers} [headers] Request headers.
+   * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   async patch<T>(
     endpoint: Endpoint,
     body: BodyReq,
-    headers?: Headers
+    requestInit?: Omit<RequestInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'PATCH',
-      headers,
-      body
+      body,
+      ...requestInit
     })
   }
 
@@ -112,14 +112,38 @@ export class SimpleHttpService {
    * Deletes a resource at the specified endpoint
    *
    * @param {Endpoint} endpoint Endpoint URL.
-   * @param {Headers} [headers] Request headers.
+   * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} - The response of the deleted resource, already typed
    */
-  async delete<T>(endpoint: Endpoint, headers?: Headers): Promise<T> {
+  async delete<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
     return await this.fetch<T>(endpoint, {
       method: 'DELETE',
-      headers
+      ...requestInit
     })
+  }
+
+  /**
+   * Sends the request to the specified endpoint
+   *
+   * @param endpoint - The endpoint to send the request
+   * @param requestInit - Additional options for the request
+   * @returns {Promise<T>} - The response from the request, already typed
+   */
+  async fetch<T>(
+    endpoint: Endpoint,
+    requestInit?: RequestInit
+  ): Promise<T> {
+    try {
+      const response = await fetch(this.baseUrl + endpoint, {
+        body: JSON.stringify(requestInit?.body),
+        headers: this.handleHeaders(requestInit?.headers),
+        ...requestInit,
+      });
+      const result = await this.handleResponse<T>(response)
+      return result
+    } catch (e) {
+      this.handleErrors(e)
+    }
   }
 
   /**
@@ -136,32 +160,6 @@ export class SimpleHttpService {
   }
 
   /**
-   * Sends the request to the specified endpoint
-   *
-   * @param endpoint - The endpoint to send the request
-   * @param options - Additional options for the request
-   * @returns {Promise<T>} - The response from the request, already typed
-   */
-  async fetch<T>(
-    endpoint: Endpoint,
-    options: Omit<RequestInit, 'body'> & { body?: BodyReq }
-  ): Promise<T> {
-    try {
-      const response = await fetch(this.baseUrl + endpoint, {
-        ...options,
-        headers: {
-          ...this.handleHeaders(options.headers)
-        },
-        body: JSON.stringify(options.body)
-      })
-      const result = await this.handleResponse<T>(response)
-      return result
-    } catch (e) {
-      this.handleErrors(e)
-    }
-  }
-
-  /**
    * Handles the headers for the request, you can extends HttpClass and
    * override handleHeaders to include the authentication token or other cutomizations.
    *
@@ -169,10 +167,10 @@ export class SimpleHttpService {
    * @returns {Headers} - The headers for the request
    */
   handleHeaders(headers: Headers): Headers {
-    return {
+    return new Headers({
       'Content-Type': 'application/json',
-      ...headers
-    }
+      ...headers,
+    });
   }
 
   /**

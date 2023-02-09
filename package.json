@@ -9,6 +9,9 @@
     "typescript",
     "javascript"
   ],
+  "scripts": {
+    "prepublish": "tsc"
+  },
   "tags": [
     "http",
     "typescript",
@@ -23,7 +26,8 @@
     "url": "git+https://github.com/coheia/simple-http-service"
   },
   "license": "MIT",
-  "main": "SimpleHttpService.ts",
+  "main": "./SimpleHttpService.js",
+  "types": "./SimpleHttpService.d.ts",
   "devDependencies": {
     "typescript": "^4.9.5",
     "@types/node": "^18.13.0"
