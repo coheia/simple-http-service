@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
+    "lib": [ "es2015", "es2015.promise" ],
     "module": "ES2015",
     "declaration": true,
     "strict": true,
