@@ -1,11 +1,13 @@
 # **Simple Http Service**
 
-A class that facilitates the use of HTTP methods, it's a simple and easy way to use in HTTP requests, each method already returns the response of the request in JSON and can also be extended to add authentication or perform other types of customization.
+A class that facilitates the use of HTTP methods in a elegant way, it's simple to use HTTP requests, each method already returns the response of the request in JSON and can also be extended to add authentication or perform other types of customization.
 
 ### **Usage**
 
 ```typescript
 import { SimpleHttpService } from '@coheia/simple-http-service'
+
+const api = new SimpleHttpService('http://localhost:3001');
 
 // simple get request
 const response = await api.get<YourResponseType>('/your/endpoint')
