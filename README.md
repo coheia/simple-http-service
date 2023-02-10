@@ -33,7 +33,7 @@ If you need to add authentication, you can extend the SimpleHttpService class an
 // Import the SimpleHttpService class and its related types, Headers and Endpoint.
 import SimpleHttpService, {
   Headers,
-  SimpleConfig
+  SimpleConfigs
 } from '@coheia/simple-http-service'
 
 // Define a constant for the token value.
@@ -45,7 +45,7 @@ class ProtectedService extends SimpleHttpService {
   private readonly token: string
 
   // The constructor sets the token and calls the parent class's constructor with the base URL.
-  constructor(token: string, config: SimpleConfig) {
+  constructor(token: string, config: SimpleConfigs) {
     super(config)
     this.token = token
   }
@@ -61,8 +61,8 @@ class ProtectedService extends SimpleHttpService {
 
 // Export an instance of the ProtectedService class with the token.
 export const apiProtected = new ProtectedService(TOKEN, {
-  baseUrl: 'https://pokeapi.co/',
-  baseEndpoint: '/api/v2/'
+  baseUrl: 'https://localhost:3001',
+  baseEndpoint: 'api/v2'
 })
 ```
 
