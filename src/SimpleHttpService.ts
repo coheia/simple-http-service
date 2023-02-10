@@ -142,10 +142,15 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
-    const fullEndpoint = new URL(
-      `${this.baseEndpoint.replace(/\/$/, '')}${endpoint.replace(/\/$/, '')}`,
-      this.baseUrl
-    )
+    let be = this.baseEndpoint
+    be = be.endsWith('/') ? be.slice(0, -1) : be
+    be = be.startsWith('/') ? be.slice(0, 1) : be
+
+    let ep = endpoint
+    ep.endsWith('/') ? ep.slice(0, -1) : ep
+    ep = ep.startsWith('/') ? ep.slice(0, 1) : ep
+
+    const fullEndpoint = new URL(`${be}/${ep}`, this.baseUrl)
     const response = await fetch(fullEndpoint, {
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers),
