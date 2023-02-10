@@ -150,7 +150,7 @@ export default class SimpleHttpService {
    */
   protected async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
-      throw new Error(await response.text())
+      throw response
     }
     return await response.json() as T
   }
