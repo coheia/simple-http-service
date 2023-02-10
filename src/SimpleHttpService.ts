@@ -133,17 +133,13 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
-    try {
-      const response = await fetch(this.baseUrl + endpoint, {
-        body: JSON.stringify(requestInit?.body),
-        headers: this.handleHeaders(requestInit?.headers),
-        ...requestInit,
-      });
-      const result = await this.handleResponse<T>(response)
-      return result
-    } catch (e) {
-      this.handleErrors(e)
-    }
+    const response = await fetch(this.baseUrl + endpoint, {
+      body: JSON.stringify(requestInit?.body),
+      headers: this.handleHeaders(requestInit?.headers),
+      ...requestInit,
+    });
+    const result = await this.handleResponse<T>(response)
+    return result
   }
 
   /**
@@ -156,6 +152,7 @@ export default class SimpleHttpService {
     if (!response.ok) {
       throw new Error(await response.text())
     }
+    console.log("===> response.json():", response.json())
     return response.json() as T
   }
 
@@ -171,21 +168,5 @@ export default class SimpleHttpService {
       'Content-Type': 'application/json',
       ...headers,
     });
-  }
-
-  /**
-   * Handles the error occurred during the fetch request
-   *
-   * @param e the error
-   * @throws Error with the error message or error object
-   */
-  protected handleErrors(e: unknown): never {
-    let err = e
-    if (typeof e === 'string') {
-      err = { message: e.toUpperCase() }
-    } else if (e instanceof Error) {
-      err = JSON.parse(e.message) as Error
-    }
-    throw err
   }
 }

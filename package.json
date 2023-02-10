@@ -18,7 +18,8 @@
     "javascript"
   ],
   "scripts": {
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "publish": "npm run prepublish && npm version patch && git push && npm publish"
   },
   "tags": [
     "http",
