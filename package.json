@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "prepublish": "tsc",
-    "publish": "npm run prepublish && npm version patch && git push && npm publish"
+    "publish:patch": "npm run prepublish && npm version patch && git push && npm publish"
   },
   "tags": [
     "http",
