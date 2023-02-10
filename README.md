@@ -7,19 +7,22 @@ A class that facilitates the use of HTTP methods in a elegant way, it's simple t
 ```typescript
 import SimpleHttpService from '@coheia/simple-http-service'
 
-const api = new SimpleHttpService('http://localhost:3001');
+const api = new SimpleHttpService({
+  baseUrl: 'http://localhost:3001'
+  baseEndpoint: 'api/v1',
+})
 
 // simple get request
-const response = await api.get<YourResponseType>('/your/endpoint')
+const response = await api.get<YourResponseType>('your/endpoint')
 
 // simple destruct response
 interface LoginSuccess {
-  accessToken: string;
+  accessToken: string
 }
-const { accessToken } = await api.post<LoginSuccess>('/auth/login', {
+const { accessToken } = await api.post<LoginSuccess>('auth/login', {
   username: 'admin',
   password: '***'
-});
+})
 ```
 
 ### **Override methods**
@@ -28,7 +31,10 @@ If you need to add authentication, you can extend the SimpleHttpService class an
 
 ```typescript
 // Import the SimpleHttpService class and its related types, Headers and Endpoint.
-import SimpleHttpService, { Headers, Endpoint } from '@coheia/simple-http-service'
+import SimpleHttpService, {
+  Headers,
+  SimpleConfig
+} from '@coheia/simple-http-service'
 
 // Define a constant for the token value.
 const TOKEN = 'your_token'
@@ -39,8 +45,8 @@ class ProtectedService extends SimpleHttpService {
   private readonly token: string
 
   // The constructor sets the token and calls the parent class's constructor with the base URL.
-  constructor(token: string, baseUrl: Endpoint) {
-    super(baseUrl)
+  constructor(token: string, config: SimpleConfig) {
+    super(config)
     this.token = token
   }
 
@@ -54,7 +60,10 @@ class ProtectedService extends SimpleHttpService {
 }
 
 // Export an instance of the ProtectedService class with the token.
-export const apiProtected = new ProtectedService(TOKEN, 'http://localhost:3001')
+export const apiProtected = new ProtectedService(TOKEN, {
+  baseUrl: 'https://pokeapi.co/',
+  baseEndpoint: '/api/v2/'
+})
 ```
 
 ### **License**

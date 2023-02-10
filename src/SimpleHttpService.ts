@@ -1,4 +1,17 @@
 /**
+ * Type that defines the configuration object.
+ */
+export interface SimpleConfigs {
+  /**
+   * The base URL of the API, ex: 'http://localhost:3001/'
+   */
+  readonly baseUrl: string
+  /**
+   * The base endpoint of the API, ex: '/api/v1'
+   */
+  readonly baseEndpoint: Endpoint
+}
+/**
  * Type that defines the endpoint URL.
  */
 export type Endpoint = string
@@ -19,18 +32,15 @@ export type Headers = RequestInit['headers']
  * @class SimpleHttpService
  */
 export default class SimpleHttpService {
-  private readonly baseUrl: string
-  private readonly baseEndpoint: Endpoint
+  private readonly config: SimpleConfigs
 
   /**
    * Initializes the class with a base URL.
    *
-   * @param baseUrl The base URL of the API.
-   * @param baseEndpoint The base endpoint of the API: ex: '/api/v1'
+   * @param config
    */
-  constructor(baseUrl: string, baseEndpoint: Endpoint) {
-    this.baseUrl = baseUrl
-    this.baseEndpoint = baseEndpoint
+  constructor(config: SimpleConfigs) {
+    this.config = config
   }
 
   /**
@@ -142,15 +152,15 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
-    let be = this.baseEndpoint
+    let be = this.config.baseEndpoint
     be = be.endsWith('/') ? be.slice(0, -1) : be
-    be = be.startsWith('/') ? be.slice(0, 1) : be
+    be = be.startsWith('/') ? be.slice(1) : be
 
     let ep = endpoint
-    ep.endsWith('/') ? ep.slice(0, -1) : ep
-    ep = ep.startsWith('/') ? ep.slice(0, 1) : ep
+    ep = ep.endsWith('/') ? ep.slice(0, -1) : ep
+    ep = ep.startsWith('/') ? ep.slice(1) : ep
 
-    const fullEndpoint = new URL(`${be}/${ep}`, this.baseUrl)
+    const fullEndpoint = new URL(`${be}/${ep}`, this.config.baseUrl)
     const response = await fetch(fullEndpoint, {
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers),
