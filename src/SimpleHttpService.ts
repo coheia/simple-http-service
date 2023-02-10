@@ -152,8 +152,7 @@ export default class SimpleHttpService {
     if (!response.ok) {
       throw new Error(await response.text())
     }
-    console.log("===> response.json():", response.json())
-    return response.json() as T
+    return await response.json() as T
   }
 
   /**
