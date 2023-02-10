@@ -8,8 +8,8 @@ A class that facilitates the use of HTTP methods in a elegant way, it's simple t
 import SimpleHttpService from '@coheia/simple-http-service'
 
 const api = new SimpleHttpService({
-  baseUrl: 'http://localhost:3001'
-  baseEndpoint: 'api/v1',
+  baseUrl: 'http://localhost:3001',
+  baseEndpoint: 'api/v1'
 })
 
 // simple get request
