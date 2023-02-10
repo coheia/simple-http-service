@@ -38,7 +38,7 @@ export class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  async get<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
+  public async get<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'GET',
       ...requestInit
@@ -54,7 +54,7 @@ export class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  async post<T>(
+  public async post<T>(
     endpoint: Endpoint,
     body: BodyReq,
     requestInit?: Omit<RequestInit, 'body'>
@@ -75,7 +75,7 @@ export class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  async put<T>(
+  public async put<T>(
     endpoint: Endpoint,
     body: BodyReq,
     requestInit?: Omit<RequestInit, 'body'>
@@ -96,7 +96,7 @@ export class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  async patch<T>(
+  public async patch<T>(
     endpoint: Endpoint,
     body: BodyReq,
     requestInit?: Omit<RequestInit, 'body'>
@@ -115,7 +115,7 @@ export class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} - The response of the deleted resource, already typed
    */
-  async delete<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
+  public async delete<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
     return await this.fetch<T>(endpoint, {
       method: 'DELETE',
       ...requestInit
@@ -129,7 +129,7 @@ export class SimpleHttpService {
    * @param requestInit - Additional options for the request
    * @returns {Promise<T>} - The response from the request, already typed
    */
-  async fetch<T>(
+  public async fetch<T>(
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
@@ -152,7 +152,7 @@ export class SimpleHttpService {
    * @param response - The response from the request
    * @returns {Promise<T>} - The response from the request, already typed
    */
-  async handleResponse<T>(response: Response): Promise<T> {
+  protected async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       throw new Error(await response.text())
     }
@@ -166,7 +166,7 @@ export class SimpleHttpService {
    * @param headers - Additional headers for the request
    * @returns {Headers} - The headers for the request
    */
-  handleHeaders(headers: Headers): Headers {
+  protected handleHeaders(headers: Headers): Headers {
     return new Headers({
       'Content-Type': 'application/json',
       ...headers,
@@ -179,7 +179,7 @@ export class SimpleHttpService {
    * @param e the error
    * @throws Error with the error message or error object
    */
-  handleErrors(e: unknown): never {
+  protected handleErrors(e: unknown): never {
     let err = e
     if (typeof e === 'string') {
       err = { message: e.toUpperCase() }

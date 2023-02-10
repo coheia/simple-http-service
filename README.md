@@ -5,7 +5,7 @@ A class that facilitates the use of HTTP methods in a elegant way, it's simple t
 ### **Usage**
 
 ```typescript
-import { SimpleHttpService } from '@coheia/simple-http-service'
+import SimpleHttpService from '@coheia/simple-http-service'
 
 const api = new SimpleHttpService('http://localhost:3001');
 
@@ -27,19 +27,25 @@ const { accessToken } = await api.post<LoginSuccess>('/auth/login', {
 If you need to add authentication, you can extend the SimpleHttpService class and override the handleHeaders method.
 
 ```typescript
-import { SimpleHttpService, Headers, Endpoint } from '@coheia/simple-http-service'
+// Import the SimpleHttpService class and its related types, Headers and Endpoint.
+import SimpleHttpService, { Headers, Endpoint } from '@coheia/simple-http-service'
 
+// Define a constant for the token value.
 const TOKEN = 'your_token'
 
-export class IsAuthenticatedService extends SimpleHttpService {
+// Create a subclass called ProtectedService that extends SimpleHttpService.
+class ProtectedService extends SimpleHttpService {
+  // Declare a private property for the token.
   private readonly token: string
 
+  // The constructor sets the token and calls the parent class's constructor with the base URL.
   constructor(token: string, baseUrl: Endpoint) {
     super(baseUrl)
     this.token = token
   }
 
-  override handleHeaders(headers: Headers): Headers {
+  // Override the handleHeaders method to add an Authorization header with the token.
+  protected override handleHeaders(headers: Headers): Headers {
     return {
       Authorization: `Bearer ${this.token}`,
       ...super.handleHeaders(headers)
@@ -47,7 +53,8 @@ export class IsAuthenticatedService extends SimpleHttpService {
   }
 }
 
-export const apiAuthenticated = new IsAuthenticatedService(TOKEN)
+// Export an instance of the ProtectedService class with the token.
+export const apiProtected = new ProtectedService(TOKEN, 'http://localhost:3001')
 ```
 
 ### **License**
