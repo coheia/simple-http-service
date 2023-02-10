@@ -20,14 +20,17 @@ export type Headers = RequestInit['headers']
  */
 export default class SimpleHttpService {
   private readonly baseUrl: string
+  private readonly baseEndpoint: Endpoint
 
   /**
    * Initializes the class with a base URL.
    *
    * @param baseUrl The base URL of the API.
+   * @param baseEndpoint The base endpoint of the API: ex: '/api/v1'
    */
-  constructor(baseUrl: string) {
+  constructor(baseUrl: string, baseEndpoint: Endpoint) {
     this.baseUrl = baseUrl
+    this.baseEndpoint = baseEndpoint
   }
 
   /**
@@ -139,7 +142,10 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
-    const fullEndpoint = new URL(endpoint, this.baseUrl)
+    const fullEndpoint = new URL(
+      `${this.baseEndpoint.replace(/\/$/, '')}/${endpoint.replace(/\/$/, '')}`,
+      this.baseUrl
+    )
     const response = await fetch(fullEndpoint, {
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers),
