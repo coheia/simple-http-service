@@ -183,7 +183,7 @@ export default class SimpleHttpService {
   }
 
   /**
-   * Handles the headers for the request, you can extends HttpClass and
+   * Handles the headers for the request, you can extends SimpleHttpService class and
    * override handleHeaders to include the authentication token or other cutomizations.
    *
    * @param headers - Additional headers for the request
