@@ -38,7 +38,10 @@ export default class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async get<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
+  public async get<T>(
+    endpoint: Endpoint,
+    requestInit?: RequestInit
+  ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'GET',
       ...requestInit
@@ -62,7 +65,7 @@ export default class SimpleHttpService {
     return await this.fetch(endpoint, {
       method: 'POST',
       body,
-      ...requestInit,
+      ...requestInit
     })
   }
 
@@ -115,7 +118,10 @@ export default class SimpleHttpService {
    * @param {RequestInit} requestInit - Additional options for the request
    * @returns {Promise<T>} - The response of the deleted resource, already typed
    */
-  public async delete<T>(endpoint: Endpoint, requestInit?: RequestInit): Promise<T> {
+  public async delete<T>(
+    endpoint: Endpoint,
+    requestInit?: RequestInit
+  ): Promise<T> {
     return await this.fetch<T>(endpoint, {
       method: 'DELETE',
       ...requestInit
@@ -133,13 +139,13 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
-    const response = await fetch(this.baseUrl + endpoint, {
+    const fullEndpoint = new URL(this.baseUrl + endpoint).toString()
+    const response = await fetch(fullEndpoint, {
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers),
-      ...requestInit,
-    });
-    const result = await this.handleResponse<T>(response)
-    return result
+      ...requestInit
+    })
+    return await this.handleResponse<T>(response)
   }
 
   /**
@@ -152,7 +158,7 @@ export default class SimpleHttpService {
     if (!response.ok) {
       throw response
     }
-    return await response.json() as T
+    return (await response.json()) as T
   }
 
   /**
@@ -165,7 +171,7 @@ export default class SimpleHttpService {
   protected handleHeaders(headers: Headers): Headers {
     return new Headers({
       'Content-Type': 'application/json',
-      ...headers,
-    });
+      ...headers
+    })
   }
 }
