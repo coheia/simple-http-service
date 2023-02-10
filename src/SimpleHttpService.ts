@@ -139,7 +139,7 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: RequestInit
   ): Promise<T> {
-    const fullEndpoint = new URL(this.baseUrl + endpoint).toString()
+    const fullEndpoint = new URL(this.baseUrl, endpoint).toString()
     const response = await fetch(fullEndpoint, {
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers),
