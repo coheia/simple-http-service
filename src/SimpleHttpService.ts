@@ -143,7 +143,7 @@ export default class SimpleHttpService {
     requestInit?: RequestInit
   ): Promise<T> {
     const fullEndpoint = new URL(
-      `${this.baseEndpoint.replace(/\/$/, '')}/${endpoint.replace(/\/$/, '')}`,
+      `${this.baseEndpoint.replace(/\/$/, '')}${endpoint.replace(/\/$/, '')}`,
       this.baseUrl
     )
     const response = await fetch(fullEndpoint, {
