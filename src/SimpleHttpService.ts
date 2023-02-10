@@ -18,7 +18,7 @@ export type Headers = RequestInit['headers']
  * @export
  * @class SimpleHttpService
  */
-export class SimpleHttpService {
+export default class SimpleHttpService {
   private readonly baseUrl: string
 
   /**

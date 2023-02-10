@@ -1,4 +1,4 @@
-import {BodyReq, Endpoint, Headers, SimpleHttpService} from './src/SimpleHttpService';
+import SimpleHttpService, {BodyReq, Endpoint, Headers} from './src/SimpleHttpService';
 
 export {
   SimpleHttpService as default,

@@ -7,12 +7,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": {
-        "default": "./dist/index.d.ts"
-      },
-      "default": {
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "keywords": [
