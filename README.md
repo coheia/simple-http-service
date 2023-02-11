@@ -51,18 +51,18 @@ class ProtectedService extends SimpleHttpService {
   }
 
   // Override the handleHeaders method to add an Authorization header with the token.
+  // Content-Type: application/json is default, if override remember to set
   protected override handleHeaders(headers: Headers): Headers {
     return {
-      Authorization: `Bearer ${this.token}`,
-      ...super.handleHeaders(headers)
+      'Authorization': `Bearer ${this.token}`,
+      'Content-Type': 'application/json'
     }
   }
 }
 
 // Export an instance of the ProtectedService class with the token.
 export const apiProtected = new ProtectedService(TOKEN, {
-  baseUrl: 'https://localhost:3001',
-  baseEndpoint: 'api/v2'
+  baseUrl: 'https://localhost:3001'
 })
 ```
 
