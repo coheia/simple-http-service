@@ -18,7 +18,7 @@ export type Endpoint = string
 /**
  * Type that defines the body of the request.
  */
-export type BodyReq = RequestInit['body']
+export type BodyReq = RequestInit['body'] | FormData
 /**
  * Type that defines the headers of the request.
  */
