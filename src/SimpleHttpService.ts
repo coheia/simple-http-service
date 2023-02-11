@@ -73,7 +73,7 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async post<T, K extends BodyReq<{}>>(
+  public async post<T, K extends BodyReq>(
     endpoint: Endpoint,
     body: K,
     requestInit?: Omit<ReqInit, 'body'>
@@ -95,7 +95,7 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async put<T, K extends BodyReq<{}>>(
+  public async put<T, K extends BodyReq>(
     endpoint: Endpoint,
     body: K,
     requestInit?: Omit<ReqInit, 'body'>
@@ -117,7 +117,7 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async patch<T, K extends BodyReq<{}>>(
+  public async patch<T, K extends BodyReq>(
     endpoint: Endpoint,
     body: K,
     requestInit?: Omit<ReqInit, 'body'>
