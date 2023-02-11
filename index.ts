@@ -3,7 +3,7 @@ import SimpleHttpService, {
   Endpoint,
   Headers,
   SimpleConfigs
-} from './src/SimpleHttpService'
+} from './src/SimpleHttpService.js'
 
 export {
   SimpleHttpService as default,
