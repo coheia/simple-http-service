@@ -1,6 +1,6 @@
 {
   "name": "@coheia/simple-http-service",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "description": "The SimpleHttpService class makes it easier to use http methods.",
   "author": {
     "name": "Felipe Correia"
