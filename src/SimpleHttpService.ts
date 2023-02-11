@@ -16,18 +16,23 @@ export interface SimpleConfigs {
  */
 export type Endpoint = string
 /**
+ * Type that defines the Request options.
+ */
+export type ReqInit = Omit<RequestInit, 'body'> & { body?: BodyReq }
+/**
  * Type that defines the body of the request.
  */
-export type BodyReq = RequestInit['body'] | FormData
+export type BodyReq = Record<string, unknown> | string
 /**
  * Type that defines the headers of the request.
  */
-export type Headers = RequestInit['headers']
+export type Headers = ReqInit['headers']
 
 /**
  * The SimpleHttpService class makes it easier to use http methods.
  * Each method returns the response of the request already typed in JSON, and it can also be
  * extended to add authentication or perform other types of customization.
+ * 
  * @export
  * @class SimpleHttpService
  */
@@ -48,12 +53,12 @@ export default class SimpleHttpService {
    *
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
-   * @param {RequestInit} requestInit - Additional options for the request
+   * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   public async get<T>(
     endpoint: Endpoint,
-    requestInit?: RequestInit
+    requestInit?: ReqInit
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'GET',
@@ -67,13 +72,13 @@ export default class SimpleHttpService {
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
-   * @param {RequestInit} requestInit - Additional options for the request
+   * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   public async post<T>(
     endpoint: Endpoint,
     body: BodyReq,
-    requestInit?: Omit<RequestInit, 'body'>
+    requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'POST',
@@ -88,13 +93,13 @@ export default class SimpleHttpService {
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
-   * @param {RequestInit} requestInit - Additional options for the request
+   * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   public async put<T>(
     endpoint: Endpoint,
     body: BodyReq,
-    requestInit?: Omit<RequestInit, 'body'>
+    requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'PUT',
@@ -109,13 +114,13 @@ export default class SimpleHttpService {
    * @template T Response type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
-   * @param {RequestInit} requestInit - Additional options for the request
+   * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
   public async patch<T>(
     endpoint: Endpoint,
     body: BodyReq,
-    requestInit?: Omit<RequestInit, 'body'>
+    requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'PATCH',
@@ -128,12 +133,12 @@ export default class SimpleHttpService {
    * Deletes a resource at the specified endpoint
    *
    * @param {Endpoint} endpoint Endpoint URL.
-   * @param {RequestInit} requestInit - Additional options for the request
+   * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} - The response of the deleted resource, already typed
    */
   public async delete<T>(
     endpoint: Endpoint,
-    requestInit?: RequestInit
+    requestInit?: ReqInit
   ): Promise<T> {
     return await this.fetch<T>(endpoint, {
       method: 'DELETE',
@@ -150,7 +155,7 @@ export default class SimpleHttpService {
    */
   public async fetch<T>(
     endpoint: Endpoint,
-    requestInit?: RequestInit
+    requestInit?: ReqInit
   ): Promise<T> {
     let be = this.config.baseEndpoint
     be = be.endsWith('/') ? be.slice(0, -1) : be
@@ -162,9 +167,9 @@ export default class SimpleHttpService {
 
     const fullEndpoint = new URL(`${be}/${ep}`, this.config.baseUrl)
     const response = await fetch(fullEndpoint, {
+      ...requestInit,
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers),
-      ...requestInit
     })
     return await this.handleResponse<T>(response)
   }
