@@ -22,7 +22,7 @@ export type ReqInit = Omit<RequestInit, 'body'> & { body?: BodyReq }
 /**
  * Type that defines the body of the request.
  */
-export type BodyReq<K = {}> = (K & Record<string, unknown>) | string
+export type BodyReq<K = {}> = (K & { [key: string]: string }) | string
 /**
  * Type that defines the headers of the request.
  */
@@ -67,14 +67,15 @@ export default class SimpleHttpService {
    * Makes a POST request to the API.
    *
    * @template T Response type.
+   * @template K Body type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async post<T, K>(
+  public async post<T, K extends BodyReq<{}>>(
     endpoint: Endpoint,
-    body: BodyReq<K>,
+    body: K,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
@@ -88,14 +89,15 @@ export default class SimpleHttpService {
    * Makes a PUT request to the API.
    *
    * @template T Response type.
+   * @template K Body type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async put<T, K>(
+  public async put<T, K extends BodyReq<{}>>(
     endpoint: Endpoint,
-    body: BodyReq<K>,
+    body: K,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
@@ -109,14 +111,15 @@ export default class SimpleHttpService {
    * Makes a PATCH request to the API.
    *
    * @template T Response type.
+   * @template K Body type.
    * @param {Endpoint} endpoint Endpoint URL.
    * @param {BodyReq} body Request body.
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async patch<T, K>(
+  public async patch<T, K extends BodyReq<{}>>(
     endpoint: Endpoint,
-    body: BodyReq<K>,
+    body: K,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
