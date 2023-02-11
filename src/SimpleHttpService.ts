@@ -22,7 +22,7 @@ export type ReqInit = Omit<RequestInit, 'body'> & { body?: BodyReq }
 /**
  * Type that defines the body of the request.
  */
-export type BodyReq = { [key: string]: string } | string
+export type BodyReq = Record<string, unknown>
 /**
  * Type that defines the headers of the request.
  */
@@ -95,7 +95,7 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async put<T, K extends BodyReq>(
+  public async put<T, K>(
     endpoint: Endpoint,
     body: K & BodyReq,
     requestInit?: Omit<ReqInit, 'body'>
@@ -117,7 +117,7 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async patch<T, K extends BodyReq>(
+  public async patch<T, K>(
     endpoint: Endpoint,
     body: K & BodyReq,
     requestInit?: Omit<ReqInit, 'body'>
