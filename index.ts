@@ -1,3 +1,4 @@
+import { removeAuthorizationHeader } from './src/Utils'
 import SimpleHttpService, {
   BodyReq,
   Endpoint,
@@ -10,5 +11,6 @@ export {
   BodyReq,
   Endpoint,
   Headers,
-  SimpleConfigs
+  SimpleConfigs,
+  removeAuthorizationHeader
 }

@@ -19,11 +19,15 @@ const api = new SimpleHttpService({
 // simple get request
 const response = await api.get<YourResponseType>('your/endpoint')
 
+type LoginBody = {
+  username: string
+  password: string
+}
 // simple destruct response
-interface LoginSuccess {
+type LoginSuccess = {
   accessToken: string
 }
-const { accessToken } = await api.post<LoginSuccess>('auth/login', {
+const { accessToken } = await api.post<LoginSuccess, LoginBody>('auth/login', {
   username: 'admin',
   password: '***'
 })
@@ -41,7 +45,7 @@ import SimpleHttpService, {
 } from '@coheia/simple-http-service'
 
 // Define a constant for the token value.
-const TOKEN = 'your_token'
+export const TOKEN = 'your_token'
 
 // Create a subclass called ProtectedService that extends SimpleHttpService.
 class ProtectedService extends SimpleHttpService {
@@ -54,11 +58,11 @@ class ProtectedService extends SimpleHttpService {
     this.token = token
   }
 
-  // Override the handleHeaders method to add an Authorization header with the token.
-  // Content-Type: application/json is default, if override remember to set
+  // Override the handleHeaders method to add an Authorization header with the token;
+  // Content-Type: application/json is default, if override remember to reset it.
   protected override handleHeaders(headers: Headers): Headers {
     return {
-      'Authorization': `Bearer ${this.token}`,
+      Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
       ...headers
     }
@@ -69,6 +73,61 @@ class ProtectedService extends SimpleHttpService {
 export const apiProtected = new ProtectedService(TOKEN, {
   baseUrl: 'https://localhost:3001'
 })
+```
+
+### **Projects example:**
+
+This code manages a CRUD API by creating a ProjectService class that extends a protected service. The protected service handles authentication by using a token and the httpServiceConfig. The code removes the authorization header when the request does not require authentication, which is the case for the getProjects and getProject methods. The code also includes methods for creating, updating, and deleting projects, which make use of the protected service's post, put, and delete methods.
+
+```typescript
+import { ProtectedService, TOKEN } from './ProtectedService'
+import { removeAuthorizationHeader } from '@coheia/simple-http-service'
+
+const httpServiceConfig = {
+  baseUrl: 'http://localhost:3001'
+}
+
+interface NewProject {
+  name: string
+  order?: number
+}
+
+interface Project extends NewProject {
+  id: string
+  created_at: string
+  updated_at: string
+}
+
+class ProjectService extends ProtectedService {
+  constructor() {
+    super(TOKEN, {
+      ...httpServiceConfig,
+      baseEndpoint: '/projects'
+    })
+  }
+
+  async getProjects(): Promise<Project[]> {
+    return await this.get<Project[]>('/', removeAuthorizationHeader)
+  }
+
+  async getProject(id: string): Promise<Project> {
+    return await this.get<Project>(`/${id}`, removeAuthorizationHeader)
+  }
+
+  async createProject(project: NewProject): Promise<Project> {
+    return await this.post<Project, NewProject>('/', project)
+  }
+
+  async updateProject(id: string, project: NewProject): Promise<Project> {
+    return await this.put<Project, NewProject>(`/${id}`, project)
+  }
+
+  async deleteProject(id: string): Promise<void> {
+    return await this.delete<void>(`/${id}`)
+  }
+}
+
+export const projectService = new ProjectService()
 ```
 
 ### **License**
