@@ -9,7 +9,7 @@ export interface SimpleConfigs {
   /**
    * The base endpoint of the API, ex: '/api/v1'
    */
-  readonly baseEndpoint: Endpoint
+  readonly baseEndpoint?: Endpoint
 }
 /**
  * Type that defines the endpoint URL.
@@ -157,7 +157,7 @@ export default class SimpleHttpService {
     endpoint: Endpoint,
     requestInit?: ReqInit
   ): Promise<T> {
-    let be = this.config.baseEndpoint
+    let be = this.config.baseEndpoint || ''
     be = be.endsWith('/') ? be.slice(0, -1) : be
     be = be.startsWith('/') ? be.slice(1) : be
 
