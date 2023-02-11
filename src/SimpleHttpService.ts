@@ -75,12 +75,12 @@ export default class SimpleHttpService {
    */
   public async post<T, K>(
     endpoint: Endpoint,
-    body: K & BodyReq,
+    body: K | BodyReq,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'POST',
-      body,
+      body: body as BodyReq,
       ...requestInit
     })
   }
@@ -97,12 +97,12 @@ export default class SimpleHttpService {
    */
   public async put<T, K>(
     endpoint: Endpoint,
-    body: K & BodyReq,
+    body: K | BodyReq,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'PUT',
-      body,
+      body: body as BodyReq,
       ...requestInit
     })
   }
@@ -119,12 +119,12 @@ export default class SimpleHttpService {
    */
   public async patch<T, K>(
     endpoint: Endpoint,
-    body: K & BodyReq,
+    body: K | BodyReq,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'PATCH',
-      body,
+      body: body as BodyReq,
       ...requestInit
     })
   }
