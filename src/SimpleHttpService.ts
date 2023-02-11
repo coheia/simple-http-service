@@ -7,7 +7,7 @@ export interface SimpleConfigs {
    */
   readonly baseUrl: string
   /**
-   * The base endpoint of the API, ex: '/api/v1'
+   * The base endpoint of the API, ex: '/api/v1', '/projects'
    */
   readonly baseEndpoint?: Endpoint
 }
@@ -22,7 +22,7 @@ export type ReqInit = Omit<RequestInit, 'body'> & { body?: BodyReq }
 /**
  * Type that defines the body of the request.
  */
-export type BodyReq = Record<string, unknown> | string
+export type BodyReq<K = {}> = (K & Record<string, unknown>) | string
 /**
  * Type that defines the headers of the request.
  */
@@ -32,7 +32,7 @@ export type Headers = ReqInit['headers']
  * The SimpleHttpService class makes it easier to use http methods.
  * Each method returns the response of the request already typed in JSON, and it can also be
  * extended to add authentication or perform other types of customization.
- * 
+ *
  * @export
  * @class SimpleHttpService
  */
@@ -56,10 +56,7 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async get<T>(
-    endpoint: Endpoint,
-    requestInit?: ReqInit
-  ): Promise<T> {
+  public async get<T>(endpoint: Endpoint, requestInit?: ReqInit): Promise<T> {
     return await this.fetch(endpoint, {
       method: 'GET',
       ...requestInit
@@ -75,9 +72,9 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async post<T>(
+  public async post<T, K>(
     endpoint: Endpoint,
-    body: BodyReq,
+    body: BodyReq<K>,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
@@ -96,9 +93,9 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async put<T>(
+  public async put<T, K>(
     endpoint: Endpoint,
-    body: BodyReq,
+    body: BodyReq<K>,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
@@ -117,9 +114,9 @@ export default class SimpleHttpService {
    * @param {ReqInit} requestInit - Additional options for the request
    * @returns {Promise<T>} Response of the request in JSON format, already typed.
    */
-  public async patch<T>(
+  public async patch<T, K>(
     endpoint: Endpoint,
-    body: BodyReq,
+    body: BodyReq<K>,
     requestInit?: Omit<ReqInit, 'body'>
   ): Promise<T> {
     return await this.fetch(endpoint, {
@@ -153,23 +150,14 @@ export default class SimpleHttpService {
    * @param requestInit - Additional options for the request
    * @returns {Promise<T>} - The response from the request, already typed
    */
-  public async fetch<T>(
-    endpoint: Endpoint,
-    requestInit?: ReqInit
-  ): Promise<T> {
-    let be = this.config.baseEndpoint || ''
-    be = be.endsWith('/') ? be.slice(0, -1) : be
-    be = be.startsWith('/') ? be.slice(1) : be
-
-    let ep = endpoint
-    ep = ep.endsWith('/') ? ep.slice(0, -1) : ep
-    ep = ep.startsWith('/') ? ep.slice(1) : ep
-
-    const fullEndpoint = new URL(`${be}/${ep}`, this.config.baseUrl)
+  public async fetch<T>(endpoint: Endpoint, requestInit?: ReqInit): Promise<T> {
+    const baseEndpoint = this._removeSlashes(this.config.baseEndpoint || '')
+    const url = `${baseEndpoint}/${this._removeSlashes(endpoint)}`
+    const fullEndpoint = new URL(url, this.config.baseUrl)
     const response = await fetch(fullEndpoint, {
       ...requestInit,
       body: JSON.stringify(requestInit?.body),
-      headers: this.handleHeaders(requestInit?.headers),
+      headers: this.handleHeaders(requestInit?.headers)
     })
     return await this.handleResponse<T>(response)
   }
@@ -195,9 +183,15 @@ export default class SimpleHttpService {
    * @returns {Headers} - The headers for the request
    */
   protected handleHeaders(headers: Headers): Headers {
-    const newHeaders = new Headers(headers);
+    const newHeaders = new Headers(headers)
     newHeaders.set('Content-Type', 'application/json')
 
     return newHeaders
+  }
+
+  private _removeSlashes(path: string): string {
+    path = path.endsWith('/') ? path.slice(0, -1) : path
+    path = path.startsWith('/') ? path.slice(1) : path
+    return path
   }
 }
