@@ -195,9 +195,9 @@ export default class SimpleHttpService {
    * @returns {Headers} - The headers for the request
    */
   protected handleHeaders(headers: Headers): Headers {
-    return new Headers({
-      'Content-Type': 'application/json',
-      ...headers
-    })
+    const newHeaders = new Headers(headers);
+    newHeaders.set('Content-Type', 'application/json')
+
+    return newHeaders
   }
 }
