@@ -55,7 +55,8 @@ class ProtectedService extends SimpleHttpService {
   protected override handleHeaders(headers: Headers): Headers {
     return {
       'Authorization': `Bearer ${this.token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      ...headers
     }
   }
 }
