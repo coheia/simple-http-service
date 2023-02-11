@@ -1,4 +1,4 @@
-import { removeAuthorizationHeader } from './src/Utils'
+import { removeAuthorizationHeader } from './src/Utils.js'
 import SimpleHttpService, {
   BodyReq,
   Endpoint,
