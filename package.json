@@ -28,10 +28,12 @@
     "http-service",
     "http",
     "typescript",
-    "javascript"
+    "javascript",
+    "front-end"
   ],
   "tags": [
     "http",
+    "front-end",
     "typescript",
     "javascript"
   ],
