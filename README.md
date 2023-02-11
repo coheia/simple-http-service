@@ -1,10 +1,10 @@
 # **Simple Http Service**
 
-The SimpleHttpService class provides a simple and convenient way to interact with an API using HTTP methods such as GET, POST, PUT, PATCH and DELETE. The class has a constructor that accepts a configuration object which contains the base URL of the API and the base endpoint (optional).
+The SimpleHttpService class provides a simple and convenient way to interact with an API using HTTP methods such as GET, POST, PUT, PATCH and DELETE. The class has a constructor that accepts a configuration object which contains the base URL of the API and the base endpoint (both optional).
 
 The class has methods for each HTTP method that accept the endpoint URL and additional options for the request (optional). These methods return a promise that resolves to the response of the request in JSON format, already typed.
 
-The class also has a private method named fetch that is responsible for sending the actual request to the API. This method can be extended to add authentication or perform other customizations.
+The class also has a private method named `fetch` that is responsible for sending the actual request to the API. This class can be extended to add authentication or perform other customizations.
 
 ### **Usage**
 
@@ -12,7 +12,7 @@ The class also has a private method named fetch that is responsible for sending 
 import SimpleHttpService from '@coheia/simple-http-service'
 
 const api = new SimpleHttpService({
-  baseUrl: 'http://localhost:3001',
+  baseUrl: 'http://localhost:3001', // remove for same domain api
   baseEndpoint: 'api/v1'
 })
 

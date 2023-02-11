@@ -155,12 +155,11 @@ export default class SimpleHttpService {
    */
   public async fetch<T>(endpoint: Endpoint, requestInit?: ReqInit): Promise<T> {
     const baseEndpoint = this._removeSlashes(this.config.baseEndpoint || '')
-    const url = `${baseEndpoint}/${this._removeSlashes(endpoint)}`
-    let fullEndpoint: URL | string
-    this.config.baseUrl
-      ? (fullEndpoint = new URL(url, this.config.baseUrl))
-      : (fullEndpoint = url)
-    const response = await fetch(fullEndpoint, {
+    let url: URL | string = `${baseEndpoint}/${this._removeSlashes(endpoint)}`
+    if (this.config.baseUrl) {
+      url = new URL(url, this.config.baseUrl)
+    }
+    const response = await fetch(url, {
       ...requestInit,
       body: JSON.stringify(requestInit?.body),
       headers: this.handleHeaders(requestInit?.headers)
