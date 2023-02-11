@@ -5,7 +5,7 @@ export interface SimpleConfigs {
   /**
    * The base URL of the API, ex: 'http://localhost:3001/'
    */
-  readonly baseUrl: string
+  readonly baseUrl?: string
   /**
    * The base endpoint of the API, ex: '/api/v1', '/projects'
    */
@@ -156,7 +156,10 @@ export default class SimpleHttpService {
   public async fetch<T>(endpoint: Endpoint, requestInit?: ReqInit): Promise<T> {
     const baseEndpoint = this._removeSlashes(this.config.baseEndpoint || '')
     const url = `${baseEndpoint}/${this._removeSlashes(endpoint)}`
-    const fullEndpoint = new URL(url, this.config.baseUrl)
+    let fullEndpoint: URL | string
+    this.config.baseUrl
+      ? (fullEndpoint = new URL(url, this.config.baseUrl))
+      : (fullEndpoint = url)
     const response = await fetch(fullEndpoint, {
       ...requestInit,
       body: JSON.stringify(requestInit?.body),
