@@ -22,7 +22,7 @@ export type ReqInit = Omit<RequestInit, 'body'> & { body?: BodyReq }
 /**
  * Type that defines the body of the request.
  */
-export type BodyReq<K = {}> = (K & { [key: string]: string }) | string
+export type BodyReq = { [key: string]: string } | string
 /**
  * Type that defines the headers of the request.
  */
