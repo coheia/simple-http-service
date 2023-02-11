@@ -75,9 +75,9 @@ export const apiProtected = new ProtectedService(TOKEN, {
 })
 ```
 
-### **Projects example:**
+### **Manages CRUD API - "Projects" example**
 
-This code manages a CRUD API by creating a ProjectService class that extends a protected service. The protected service handles authentication by using a token and the httpServiceConfig. The code removes the authorization header when the request does not require authentication, which is the case for the getProjects and getProject methods. The code also includes methods for creating, updating, and deleting projects, which make use of the protected service's post, put, and delete methods.
+The following code manages a CRUD API by creating a ProjectService class that extends a ProtectedService (the prev example). The code removes the authorization header when the request does not require authentication, which is the case for the `getProjects` and `getProject` methods. The code also includes methods for creating, updating, and deleting projects, which make use of the ProtectedService's `post`, `put`, and `delete` methods.
 
 ```typescript
 import { ProtectedService, TOKEN } from './ProtectedService'
