@@ -37,14 +37,14 @@ export type Headers = ReqInit['headers']
  * @class SimpleHttpService
  */
 export default class SimpleHttpService {
-  private readonly config: SimpleConfigs
+  private readonly config?: SimpleConfigs
 
   /**
    * Initializes the class with a base URL.
    *
    * @param config
    */
-  constructor(config: SimpleConfigs) {
+  constructor(config?: SimpleConfigs) {
     this.config = config
   }
 
@@ -154,10 +154,10 @@ export default class SimpleHttpService {
    * @returns {Promise<T>} - The response from the request, already typed
    */
   public async fetch<T>(endpoint: Endpoint, requestInit?: ReqInit): Promise<T> {
-    const baseEndpoint = this._removeSlashes(this.config.baseEndpoint || '')
+    const baseEndpoint = this._removeSlashes(this.config?.baseEndpoint || '')
     let url: URL | string = `${baseEndpoint}/${this._removeSlashes(endpoint)}`
-    if (this.config.baseUrl) {
-      url = new URL(url, this.config.baseUrl)
+    if (this.config?.baseUrl) {
+      url = new URL(url, this.config?.baseUrl)
     }
     const response = await fetch(url, {
       ...requestInit,

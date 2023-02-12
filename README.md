@@ -1,10 +1,6 @@
 # **Simple Http Service**
 
-The SimpleHttpService class provides a simple and convenient way to interact with an API using HTTP methods such as GET, POST, PUT, PATCH and DELETE. The class has a constructor that accepts a configuration object which contains the base URL of the API and the base endpoint (both optional).
-
-The class has methods for each HTTP method that accept the endpoint URL and additional options for the request (optional). These methods return a promise that resolves to the response of the request in JSON format, already typed.
-
-The class also has a private method named `fetch` that is responsible for sending the actual request to the API. This class can be extended to add authentication or perform other customizations.
+The SimpleHttpService class provides a simple way to make HTTP requests using the fetch API. The class supports GET, POST, PUT, PATCH, and DELETE methods and returns the response in JSON format, already typed. The class can also be extended to add authentication or other customizations and each method can have its behavior changed at the time of use through the `requestInit`.
 
 ### **Usage**
 
@@ -129,6 +125,41 @@ class ProjectService extends ProtectedService {
 
 export const projectService = new ProjectService()
 ```
+
+### **SimpleConfigs type**
+
+Defines the optional configuration object for the SimpleHttpService class.
+
+```typescript
+import { SimpleConfigs } from '@coheia/simple-http-service';
+
+export const httpServiceConfig: SimpleConfigs = {
+  baseUrl: 'http://localhost:3001',
+  baseEndpoint: 'api/v1'
+}
+```
+
+### **Same domain API**
+
+If you are using the same domain for both the API and the client, you can omit the configuration object completely, or individually `baseUrl` and/or `baseEndpoint` like this:
+
+```typescript
+import SimpleHttpService from '@coheia/simple-http-service';
+
+//for sambe domain api whitout baseEndpoint
+const http = new SimpleHttpService();
+const project = await http.get('/project/10');
+// GET - YOUR_DOMAIN/project/10
+
+// and for same domain api with api version baseEndpoint
+const http = new SimpleHttpService({ baseEndpoint: 'api/v3' });
+const project = await http.get('/project/10');
+// GET - YOUR_DOMAIN/api/v3/project/10
+```
+
+### **Contributing**
+
+Your contributions are always welcome! Please submit a pull request with your changes or create an issue to discuss anything about SimpleHttpService.
 
 ### **License**
 
