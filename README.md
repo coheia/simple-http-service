@@ -13,6 +13,7 @@ And if you only need the most used methods and not a lot of things you won't use
 
 ## **Table of Contents**
   - [**Installation**](#installation)
+  - [**Import**](#import)
   - [**Usage**](#usage)
   - [**Configuration object**](#configuration-object)
   - [**Override handleHeaders - JWT Example**](#override-handleheaders---jwt-example)
@@ -25,6 +26,14 @@ And if you only need the most used methods and not a lot of things you won't use
 
 ```console
 $ npm install @coheia/simple-http-service
+```
+
+### **Import**
+
+Import the SimpleHttpService class and its related types as follow:
+
+```typescript
+import SimpleHttpService, { Headers, SimpleConfigs } from '@coheia/simple-http-service'
 ```
 
 ### **Usage**
@@ -71,29 +80,21 @@ export const httpServiceConfig: SimpleConfigs = {
 
 If you need to add authentication, you can extend the SimpleHttpService class and override the handleHeaders method.
 
-```typescript
-// Import the SimpleHttpService class and its related types, Headers and Endpoint.
-import SimpleHttpService, {
-  Headers,
-  SimpleConfigs
-} from '@coheia/simple-http-service'
+> `'Content-Type': 'application/json'` is default in SimpleHttpService, if override handleHeaders remember to reset it, or not if you preferer other type 👏
 
-// Define a constant for the token value.
-export const TOKEN = 'your_token'
+```typescript
+import SimpleHttpService, { Headers, SimpleConfigs} from '@coheia/simple-http-service'
 
 // Create a subclass called ProtectedService that extends SimpleHttpService.
 class ProtectedService extends SimpleHttpService {
-  // Declare a private property for the token.
   private readonly token: string
 
-  // The constructor sets the token and calls the parent class's constructor with the base URL.
-  constructor(token: string, config: SimpleConfigs) {
+  // The constructor sets the token and calls the parent class's constructor with the config param.
+  constructor(token: string, config?: SimpleConfigs) {
     super(config)
     this.token = token
   }
 
-  // Override the handleHeaders method to add an Authorization header with the token;
-  // Content-Type: application/json is default, if override remember to reset it.
   protected override handleHeaders(headers: Headers): Headers {
     return {
       Authorization: `Bearer ${this.token}`,
@@ -103,10 +104,8 @@ class ProtectedService extends SimpleHttpService {
   }
 }
 
-// Export an instance of the ProtectedService class with the token.
-export const apiProtected = new ProtectedService(TOKEN, {
-  baseUrl: 'https://localhost:3001'
-})
+export const TOKEN = 'your_token'
+export const apiProtected = new ProtectedService(TOKEN)
 ```
 
 ### **Manage CRUD API - "Projects" example**
