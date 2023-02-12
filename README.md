@@ -2,6 +2,15 @@
 
 The SimpleHttpService class provides a simple way to make HTTP requests using the fetch API. The class supports GET, POST, PUT, PATCH, and DELETE methods and returns the response in JSON format, already typed. The class can also be extended to add authentication or other customizations and each method can have its behavior changed at the time of use through the `requestInit`.
 
+## **Table of Contents**
+  - [**Usage**](#usage)
+  - [**Override methods**](#override-methods)
+  - [**Manages CRUD API - "Projects" example**](#manages-crud-api---projects-example)
+  - [**SimpleConfigs type - constructor config optional param**](#simpleconfigs-type---constructor-config-optional-param)
+  - [**Same domain API**](#same-domain-api)
+  - [**Contributing**](#contributing)
+  - [**License**](#license)
+
 ### **Usage**
 
 ```typescript
@@ -126,7 +135,7 @@ class ProjectService extends ProtectedService {
 export const projectService = new ProjectService()
 ```
 
-### **SimpleConfigs type**
+### **SimpleConfigs type - constructor config optional param**
 
 Defines the optional configuration object for the SimpleHttpService class.
 
