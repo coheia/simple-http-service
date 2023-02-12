@@ -1,4 +1,10 @@
-# **Simple Http Service**
+# **Simple Http Service** ![npm](https://img.shields.io/npm/v/@coheia/simple-http-service)
+
+![npm type definitions](https://img.shields.io/npm/types/@coheia/simple-http-service)
+![NPM](https://img.shields.io/npm/l/@coheia/simple-http-service)
+![npm bundle size](https://img.shields.io/bundlephobia/min/@coheia/simple-http-service?color=1bbfc1)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@coheia/simple-http-service?color=1bbfc1)
+![npm](https://img.shields.io/npm/dt/@coheia/simple-http-service?color=6d9c29)
 
 The SimpleHttpService class provides a simple way to make HTTP requests using the fetch API. The class supports GET, POST, PUT, PATCH, and DELETE methods and returns the response in JSON format, already typed. The class can also be extended to add authentication or other customizations and each method can have its behavior changed at the time of use through the `requestInit`.
 
@@ -7,14 +13,20 @@ And if you only need the most used methods and not a lot of things you won't use
 ![image](https://user-images.githubusercontent.com/81380764/218327047-e83b2aa1-9ff7-4a76-9661-95c52b425a2f.png)
 
 ## **Table of Contents**
+  - [**Installation**](#installation)
   - [**Usage**](#usage)
   - [**Override methods**](#override-methods)
-  - [**Manages CRUD API - "Projects" example**](#manages-crud-api---projects-example)
+  - [**Manage CRUD API - "Projects" example**](#manage-crud-api---projects-example)
   - [**SimpleConfigs type - constructor config optional param**](#simpleconfigs-type---constructor-config-optional-param)
   - [**Same domain API**](#same-domain-api)
   - [**Contributing**](#contributing)
   - [**License**](#license)
 
+### **Installation**
+
+```console
+$ npm install @coheia/simple-http-service
+```
 ### **Usage**
 
 ```typescript
@@ -84,7 +96,7 @@ export const apiProtected = new ProtectedService(TOKEN, {
 })
 ```
 
-### **Manages CRUD API - "Projects" example**
+### **Manage CRUD API - "Projects" example**
 
 The following code manages a CRUD API by creating a ProjectService class that extends a ProtectedService (the prev example). The code removes the authorization header when the request does not require authentication, which is the case for the `getProjects` and `getProject` methods. The code also includes methods for creating, updating, and deleting projects, which make use of the ProtectedService's `post`, `put`, and `delete` methods.
 
