@@ -150,25 +150,27 @@ export const httpServiceConfig: SimpleConfigs = {
 
 ### **Same domain API**
 
-If you are using the same domain for both the API and the client, you can omit the configuration object completely, or individually `baseUrl` and/or `baseEndpoint` like this:
+If you are using the same domain for both the API and the client, you can omit the configuration object completely, or individually `baseUrl` or `baseEndpoint` like this:
 
 ```typescript
 import SimpleHttpService from '@coheia/simple-http-service';
 
-//for sambe domain api whitout baseEndpoint
+//for same domain api without baseEndpoint
 const http = new SimpleHttpService();
-const project = await http.get('/project/10');
+const project = await http.get<ProjectType>('/project/10');
 // GET - YOUR_DOMAIN/project/10
+```
 
-// and for same domain api with api version baseEndpoint
+```typescript
+// and for same domain api with baseEndpoint as api version
 const http = new SimpleHttpService({ baseEndpoint: 'api/v3' });
-const project = await http.get('/project/10');
+const project = await http.get<ProjectType>('/project/10');
 // GET - YOUR_DOMAIN/api/v3/project/10
 ```
 
 ### **Contributing**
 
-Your contributions are always welcome! Please submit a pull request with your changes or create an issue to discuss anything about SimpleHttpService.
+Your contributions are always welcome! Submit a pull request with your changes or create an issue to discuss anything.
 
 ### **License**
 
