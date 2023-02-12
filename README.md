@@ -1,7 +1,6 @@
-# **Simple Http Service** ![npm](https://img.shields.io/npm/v/@coheia/simple-http-service)
+# **Simple Http Service**
 
-![npm type definitions](https://img.shields.io/npm/types/@coheia/simple-http-service)
-![NPM](https://img.shields.io/npm/l/@coheia/simple-http-service)
+![npm](https://img.shields.io/npm/v/@coheia/simple-http-service)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/@coheia/simple-http-service?color=1bbfc1)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@coheia/simple-http-service?color=1bbfc1)
 ![npm](https://img.shields.io/npm/dt/@coheia/simple-http-service?color=6d9c29)
@@ -15,9 +14,9 @@ And if you only need the most used methods and not a lot of things you won't use
 ## **Table of Contents**
   - [**Installation**](#installation)
   - [**Usage**](#usage)
-  - [**Override methods**](#override-methods)
+  - [**Configuration object**](#configuration-object)
+  - [**Override handleHeaders - JWT Example**](#override-handleheaders---jwt-example)
   - [**Manage CRUD API - "Projects" example**](#manage-crud-api---projects-example)
-  - [**SimpleConfigs type - constructor config optional param**](#simpleconfigs-type---constructor-config-optional-param)
   - [**Same domain API**](#same-domain-api)
   - [**Contributing**](#contributing)
   - [**License**](#license)
@@ -27,6 +26,7 @@ And if you only need the most used methods and not a lot of things you won't use
 ```console
 $ npm install @coheia/simple-http-service
 ```
+
 ### **Usage**
 
 ```typescript
@@ -54,7 +54,20 @@ const { accessToken } = await api.post<LoginSuccess, LoginBody>('auth/login', {
 })
 ```
 
-### **Override methods**
+### **Configuration object**
+
+`SimpleConfigs` type defines the configuration object (optional) received in the SimpleHttpService class's constructor.
+
+```typescript
+import { SimpleConfigs } from '@coheia/simple-http-service';
+
+export const httpServiceConfig: SimpleConfigs = {
+  baseUrl: 'http://localhost:3001', // don't add for same domain
+  baseEndpoint: 'api/v1' // prefixed in every method's endpoint param
+}
+```
+
+### **Override handleHeaders - JWT Example**
 
 If you need to add authentication, you can extend the SimpleHttpService class and override the handleHeaders method.
 
@@ -98,7 +111,7 @@ export const apiProtected = new ProtectedService(TOKEN, {
 
 ### **Manage CRUD API - "Projects" example**
 
-The following code manages a CRUD API by creating a ProjectService class that extends a ProtectedService (the prev example). The code removes the authorization header when the request does not require authentication, which is the case for the `getProjects` and `getProject` methods. The code also includes methods for creating, updating, and deleting projects, which make use of the ProtectedService's `post`, `put`, and `delete` methods.
+The following code manages a CRUD API by creating a ProjectService class that extends a ProtectedService (the JWT example). The code removes the authorization header when the request does not require authentication, which is the case for the `getProjects` and `getProject` methods. The code also includes methods for creating, updating, and deleting projects, which make use of the ProtectedService's `post`, `put`, and `delete` methods.
 
 ```typescript
 import { ProtectedService, TOKEN } from './ProtectedService'
@@ -151,22 +164,9 @@ class ProjectService extends ProtectedService {
 export const projectService = new ProjectService()
 ```
 
-### **SimpleConfigs type - constructor config optional param**
-
-Defines the optional configuration object for the SimpleHttpService class.
-
-```typescript
-import { SimpleConfigs } from '@coheia/simple-http-service';
-
-export const httpServiceConfig: SimpleConfigs = {
-  baseUrl: 'http://localhost:3001',
-  baseEndpoint: 'api/v1'
-}
-```
-
 ### **Same domain API**
 
-If you are using the same domain for both the API and the client, you can omit the configuration object completely, or individually `baseUrl` or `baseEndpoint` like this:
+If you are using the same domain for both the API and the client, you can omit the configuration object completely, or individually `baseUrl` and `baseEndpoint` like this:
 
 ```typescript
 import SimpleHttpService from '@coheia/simple-http-service';
@@ -174,14 +174,14 @@ import SimpleHttpService from '@coheia/simple-http-service';
 //for same domain api without baseEndpoint
 const http = new SimpleHttpService();
 const project = await http.get<ProjectType>('/project/10');
-// GET - YOUR_DOMAIN/project/10
+// GET - CLIENT_DOMAIN/project/10
 ```
 
 ```typescript
 // and for same domain api with baseEndpoint as api version
 const http = new SimpleHttpService({ baseEndpoint: 'api/v3' });
 const project = await http.get<ProjectType>('/project/10');
-// GET - YOUR_DOMAIN/api/v3/project/10
+// GET - CLIENT_DOMAIN/api/v3/project/10
 ```
 
 ### **Contributing**
