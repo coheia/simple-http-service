@@ -2,6 +2,10 @@
 
 The SimpleHttpService class provides a simple way to make HTTP requests using the fetch API. The class supports GET, POST, PUT, PATCH, and DELETE methods and returns the response in JSON format, already typed. The class can also be extended to add authentication or other customizations and each method can have its behavior changed at the time of use through the `requestInit`.
 
+And if you only need the most used methods and not a lot of things you won't use...
+
+![image](https://user-images.githubusercontent.com/81380764/218327047-e83b2aa1-9ff7-4a76-9661-95c52b425a2f.png)
+
 ## **Table of Contents**
   - [**Usage**](#usage)
   - [**Override methods**](#override-methods)
